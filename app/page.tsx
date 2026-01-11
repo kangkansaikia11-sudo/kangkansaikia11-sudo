@@ -77,7 +77,7 @@ const interestingRead = [
                 source="The Indian Express"
               />
             ))}
-{theHindu.map((item, index) => (
+{theHindu.map((item: NewsItem, index: number) => (
   <NewsCard
     key={`hindu-${index}`}
     {...item}
@@ -93,7 +93,7 @@ const interestingRead = [
   </h2>
 
   <div className="space-y-6">
-    {bbc.map((item, index) => (
+    {bbc.map((item: NewsItem, index: number) => (
       <NewsCard
         key={`bbc-${index}`}
         {...item}
@@ -101,7 +101,7 @@ const interestingRead = [
       />
     ))}
 
-    {nytWorld.map((item, index) => (
+    {nytWorld.map((item: NewsItem, index: number) => (
       <NewsCard
         key={`nyt-${index}`}
         {...item}
@@ -122,7 +122,7 @@ const interestingRead = [
       </h3>
 
       <div className="space-y-6">
-        {ieOpinion.map((item, index) => (
+        {ieOpinion.map((item: NewsItem, index: number) => (
           <NewsCard
             key={`ie-op-${index}`}
             {...item}
@@ -138,7 +138,7 @@ const interestingRead = [
       </h3>
 
       <div className="space-y-6">
-        {hinduEditorial.map((item, index) => (
+        {hinduEditorial.map((item: NewsItem, index: number) => (
           <NewsCard
             key={`hindu-ed-${index}`}
             {...item}
@@ -155,7 +155,7 @@ const interestingRead = [
   </h2>
 
   <div className="space-y-6">
-    {interestingRead.map((item, index) => (
+    {interestingRead.map((item: NewsItem, index: number) => (
       <NewsCard
         key={`interesting-${index}`}
         {...item}
