@@ -36,17 +36,12 @@ const mitRead = await fetchTopNews(
   1
 );
 
-const owidRead = await fetchTopNews(
-  "https://ourworldindata.org/atom.xml",
-  1
-);
-
 const interestingRead = [
-  ...mitRead.map(item => ({
+  ...mitRead.map((item: any) => ({
     ...item,
     source: "MIT Technology Review",
   })),
-  ...owidRead.map(item => ({
+  ...owidRead.map((item: any) => ({
     ...item,
     source: "Our World in Data",
   })),
