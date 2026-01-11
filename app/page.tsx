@@ -35,6 +35,11 @@ const mitRead = await fetchTopNews(
   "https://www.technologyreview.com/feed/",
   1
 );
+const owidRead = await fetchTopNews(
+  "https://ourworldindata.org/atom.xml",
+  1
+);
+
 
 const interestingRead = [
   ...mitRead.map((item: any) => ({
