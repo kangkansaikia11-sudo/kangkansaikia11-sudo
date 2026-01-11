@@ -69,7 +69,15 @@ const interestingRead = [
   return (
     <div className="bg-gray-50 min-h-screen py-8">
       <div className="max-w-4xl mx-auto space-y-12 px-4">
-        <h2 className="text-3xl font-semibold mb-8">
+<header className="mb-12">
+  <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900 leading-tight">
+    India & World News
+  </h1>
+  <p className="mt-3 text-lg text-slate-600 max-w-2xl">
+    Curated headlines that explain what’s happening — and why it matters.
+  </p>
+</header>
+        <h2 className="text-3xl font-semibold mb-6 tracking-tight text-slate-900">
           Today’s Top News
         </h2>
 
@@ -93,7 +101,7 @@ const interestingRead = [
           </div>
         </section>
 <section>
-  <h2 className="text-3xl font-semibold mb-8 tracking-tight border-b pb-3">
+  <h2 className="text-3xl font-semibold mb-6 tracking-tight text-slate-900 border-b pb-3">
     World Top News
   </h2>
 
@@ -124,7 +132,7 @@ const interestingRead = [
   </div>
 </section>
 <section id="opinion">
-  <h2 className="text-3xl font-semibold mb-8 tracking-tight border-b pb-3">
+  <h2 className="text-3xl font-semibold mb-6 tracking-tight text-slate-900 border-b pb-3">
     Opinion & Editorial
   </h2>
 
@@ -163,7 +171,7 @@ const interestingRead = [
   </div>
 </section>
 <section id="interesting">
-  <h2 className="text-3xl font-semibold mb-8 tracking-tight border-b pb-3">
+  <h2 className="text-3xl font-semibold mb-6 tracking-tight text-slate-900 border-b pb-3">
     Interesting Read
   </h2>
 
