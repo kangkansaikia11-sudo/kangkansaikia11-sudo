@@ -1,5 +1,13 @@
 import Parser from "rss-parser";
 
+type ScoredItem = {
+  title: string;
+  link: string;
+  published: string;
+  image: string | null;
+  score: number;
+};
+
 const parser: Parser<any, any> = new Parser({
   customFields: {
     item: [
@@ -108,7 +116,7 @@ export async function fetchTopNews(
   try {
     const feed = await parser.parseURL(url);
 
-    const scored = feed.items.map((item: any) => {
+    const scored: ScoredItem[] = feed.items.map((item: any) => {
   const image = extractImage(item);
 
 
@@ -123,7 +131,7 @@ export async function fetchTopNews(
 
 
     return scored
-      .sort((a, b) => b.score - a.score)
+      .sort((a: ScoredItem, b: ScoredItem) => b.score - a.score)
       .slice(0, limit);
   } catch (error) {
     console.warn(`RSS fetch failed for ${url}`);

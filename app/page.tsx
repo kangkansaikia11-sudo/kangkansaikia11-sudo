@@ -159,7 +159,7 @@ const interestingRead = [
       <NewsCard
         key={`interesting-${index}`}
         {...item}
-        source={item.source}
+        source={item.source ?? "Interesting Read"}
         showWhyItMatters
       />
     ))}
