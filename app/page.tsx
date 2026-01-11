@@ -1,6 +1,15 @@
 import { fetchTopNews } from "@/lib/rss";
 import NewsCard from "./components/NewsCard";
 
+type NewsItem = {
+  title: string;
+  link: string;
+  published: string;
+  image?: string | null;
+  score?: number;
+  source?: string;
+};
+
 export default async function Home() {
   const indianExpress = await fetchTopNews(
     "https://indianexpress.com/feed/",
@@ -61,7 +70,7 @@ const interestingRead = [
 
         <section>
           <div className="space-y-6">
-            {indianExpress.map((item, index) => (
+            {indianExpress.map((item: NewsItem, index: number) => (
               <NewsCard
                 key={index}
                 {...item}
