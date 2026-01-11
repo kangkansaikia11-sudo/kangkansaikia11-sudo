@@ -30,6 +30,11 @@ const nytWorld = await fetchTopNews(
   2
 );
 
+const thePrintWorld = await fetchTopNews(
+  "https://theprint.in/category/world/feed/",
+  2
+);
+
 const ieOpinion = await fetchTopNews(
   "https://indianexpress.com/section/opinion/feed/",
   3
@@ -108,6 +113,14 @@ const interestingRead = [
         source="New York Times"
       />
     ))}
+
+{thePrintWorld.map((item: NewsItem, index: number) => (
+  <NewsCard
+    key={`print-world-${index}`}
+    {...item}
+    source="The Print"
+  />
+))}
   </div>
 </section>
 <section id="opinion">
