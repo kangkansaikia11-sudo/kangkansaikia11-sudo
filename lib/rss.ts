@@ -76,15 +76,19 @@ function extractImage(item: any): string | null {
     return normalizeImageUrl(item.enclosure.url);
   }
 
-  // 2️⃣ media:content (Indian Express format)
+  // 2️⃣ media:content (handles IE + The Print)
   if (item.mediaContent) {
+    // Object form
     if (item.mediaContent.$?.url) {
       return normalizeImageUrl(item.mediaContent.$.url);
     }
 
+    // Array form
     if (Array.isArray(item.mediaContent)) {
-      if (item.mediaContent[0]?.$?.url) {
-        return normalizeImageUrl(item.mediaContent[0].$.url);
+      for (const media of item.mediaContent) {
+        if (media?.$?.url) {
+          return normalizeImageUrl(media.$.url);
+        }
       }
     }
   }
@@ -94,7 +98,7 @@ function extractImage(item: any): string | null {
     return normalizeImageUrl(item.mediaThumbnail.$.url);
   }
 
-  // 4️⃣ HTML fallback
+  // 4️⃣ HTML fallback (last resort)
   const html =
     item.contentEncoded ||
     item.content ||
