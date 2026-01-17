@@ -62,6 +62,18 @@ function scoreArticle(title: string, published: string) {
 
   return score;
 }
+function isRecent(published: string, maxDays = 1): boolean {
+  if (!published) return false;
+
+  const publishedDate = new Date(published);
+  const now = new Date();
+
+  const diffDays =
+    (now.getTime() - publishedDate.getTime()) / (1000 * 60 * 60 * 24);
+
+  return diffDays <= maxDays;
+}
+
 function normalizeImageUrl(url: string | null): string | null {
   if (!url) return null;
 
@@ -162,25 +174,24 @@ export async function fetchTopNews(
   try {
     const feed = await parser.parseURL(url);
 
-    const scored: ScoredItem[] = await Promise.all(
-  feed.items.map(async (item: any): Promise<ScoredItem> => {
-    const link = item.link ?? "";
-    let image = extractImage(item);
-
-    // If RSS has no image, try OG image from article page
-    if (!image && link) {
-      image = await fetchOgImage(link);
-    }
+    const scored: ScoredItem[] = feed.items
+  .filter((item: any) =>
+    url.includes("opinion/editorial")
+      ? isRecent(item.pubDate, 1)
+      : true
+  )
+  .map((item: any) => {
+    const image = extractImage(item);
 
     return {
       title: item.title ?? "",
-      link,
+      link: item.link ?? "",
       published: item.pubDate ?? "",
       image,
       score: scoreArticle(item.title ?? "", item.pubDate ?? ""),
     };
-  })
-);
+  });
+
 
     return scored
       .sort((a: ScoredItem, b: ScoredItem) => b.score - a.score)
