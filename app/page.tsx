@@ -1,3 +1,4 @@
+import AutoRefresh from "./components/AutoRefresh";
 import { fetchTopNews } from "@/lib/rss";
 import NewsCard from "./components/NewsCard";
 
@@ -12,7 +13,7 @@ type NewsItem = {
 
 export default async function Home() {
   const indianExpress = await fetchTopNews(
-    "https://indianexpress.com/feed/",
+    "  "https://indianexpress.com/section/india/feed/",
     4
   );
 const theHindu = await fetchTopNews(
