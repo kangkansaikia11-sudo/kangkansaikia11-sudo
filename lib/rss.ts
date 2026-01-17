@@ -3,6 +3,7 @@ import Parser from "rss-parser";
 export const revalidate = 1800; // 30 minutes
 
 const PLACEHOLDER_IMAGE = "/news-placeholder.jpg";
+const HINDU_EDITORIAL_PLACEHOLDER = "/hindu-editorial-placeholder.jpg";
 
 type ScoredItem = {
   title: string;
@@ -185,10 +186,14 @@ export async function fetchTopNews(
   .map((item: any) => {
   let image = extractImage(item);
 
-  // STEP 5A: Force placeholder if image is missing
-  if (!image) {
-    image = PLACEHOLDER_IMAGE;
+// STEP 5A: Source-specific placeholder
+if (!image) {
+  if (url.includes("opinion/editorial")) {
+    image = HINDU_EDITORIAL_PLACEHOLDER; // Hindu Editorial
+  } else {
+    image = PLACEHOLDER_IMAGE; // All others (Print, etc.)
   }
+}
 
   return {
     title: item.title ?? "",
