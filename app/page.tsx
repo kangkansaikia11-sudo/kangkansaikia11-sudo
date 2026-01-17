@@ -13,7 +13,7 @@ type NewsItem = {
 
 export default async function Home() {
   const indianExpress = await fetchTopNews(
-    "  "https://indianexpress.com/section/india/feed/",
+    "https://indianexpress.com/section/india/feed/",
     4
   );
 const theHindu = await fetchTopNews(
