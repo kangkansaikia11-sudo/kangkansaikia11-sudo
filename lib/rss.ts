@@ -2,6 +2,8 @@ import Parser from "rss-parser";
 
 export const revalidate = 1800; // 30 minutes
 
+const PLACEHOLDER_IMAGE = "/news-placeholder.jpg";
+
 type ScoredItem = {
   title: string;
   link: string;
@@ -181,17 +183,21 @@ export async function fetchTopNews(
       : true
   )
   .map((item: any) => {
-    const image = extractImage(item);
+  let image = extractImage(item);
 
-    return {
-      title: item.title ?? "",
-      link: item.link ?? "",
-      published: item.pubDate ?? "",
-      image,
-      score: scoreArticle(item.title ?? "", item.pubDate ?? ""),
-    };
-  });
+  // STEP 5A: Force placeholder if image is missing
+  if (!image) {
+    image = PLACEHOLDER_IMAGE;
+  }
 
+  return {
+    title: item.title ?? "",
+    link: item.link ?? "",
+    published: item.pubDate ?? "",
+    image,
+    score: scoreArticle(item.title ?? "", item.pubDate ?? ""),
+  };
+});
 
     return scored
       .sort((a: ScoredItem, b: ScoredItem) => b.score - a.score)
