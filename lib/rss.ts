@@ -1,5 +1,7 @@
 import Parser from "rss-parser";
 
+export const revalidate = 1800; // 30 minutes
+
 type ScoredItem = {
   title: string;
   link: string;
