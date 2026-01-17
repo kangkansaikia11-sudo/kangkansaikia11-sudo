@@ -113,6 +113,46 @@ function extractImage(item: any): string | null {
   return null;
 }
 
+async function fetchOgImage(pageUrl: string): Promise<string | null> {
+  if (!pageUrl) return null;
+
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 3000);
+
+    const res = await fetch(pageUrl, {
+      signal: controller.signal,
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome Safari",
+      },
+      redirect: "follow",
+    });
+
+    clearTimeout(timeout);
+
+    if (!res.ok) return null;
+
+    const html = await res.text();
+
+    const og =
+      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+
+    if (og?.[1]) return normalizeImageUrl(og[1]);
+
+    const tw =
+      html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i) ||
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i);
+
+    if (tw?.[1]) return normalizeImageUrl(tw[1]);
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export async function fetchTopNews(
   url: string,
   limit: number
@@ -120,19 +160,25 @@ export async function fetchTopNews(
   try {
     const feed = await parser.parseURL(url);
 
-    const scored: ScoredItem[] = feed.items.map((item: any) => {
-  const image = extractImage(item);
+    const scored: ScoredItem[] = await Promise.all(
+  feed.items.map(async (item: any): Promise<ScoredItem> => {
+    const link = item.link ?? "";
+    let image = extractImage(item);
 
+    // If RSS has no image, try OG image from article page
+    if (!image && link) {
+      image = await fetchOgImage(link);
+    }
 
-  return {
-    title: item.title ?? "",
-    link: item.link ?? "",
-    published: item.pubDate ?? "",
-    image,
-    score: scoreArticle(item.title ?? "", item.pubDate ?? ""),
-  };
-});
-
+    return {
+      title: item.title ?? "",
+      link,
+      published: item.pubDate ?? "",
+      image,
+      score: scoreArticle(item.title ?? "", item.pubDate ?? ""),
+    };
+  })
+);
 
     return scored
       .sort((a: ScoredItem, b: ScoredItem) => b.score - a.score)
