@@ -16,8 +16,8 @@ export default async function Home() {
     "https://indianexpress.com/section/india/feed/",
     4
   );
-const theHindu = await fetchTopNews(
-  "https://www.thehindu.com/news/national/feeder/default.rss",
+const thePrintIndia = await fetchTopNews(
+  "https://theprint.in/category/india/feed/",
   5
 );
 
@@ -91,11 +91,11 @@ const interestingRead = [
                 source="The Indian Express"
               />
             ))}
-{theHindu.map((item: NewsItem, index: number) => (
+{thePrintIndia.map((item: NewsItem, index: number) => (
   <NewsCard
-    key={`hindu-${index}`}
+    key={`print-india-${index}`}
     {...item}
-    source="The Hindu"
+    source="The Print"
   />
 ))}
 
